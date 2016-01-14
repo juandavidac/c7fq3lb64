@@ -3,7 +3,21 @@ class ExpensesController < ApplicationController
     if params[:category_id].blank? && params[:concept].blank?
       @expenses = Expense.order("date DESC")
     elsif params[:concept] && params[:category_id].blank?
-      @expenses=Expense.where(concept: "#{params[:concept]}").to_a
+      concept=params[:concept].split
+      expense=Expense.all
+      @expenses=[]
+      expense.each do |hash|
+          if concept.any? {|w| hash[:concept] =~ /#{w}/ }
+            @expenses << hash
+          end
+      end
+
+      #concept=params[:concept]
+      #expense=Expense.all  Podmeos obtener una array con hash y aplicar ruby
+      #@expenses=expense.select{|x| x[:concept]==concept}
+
+      #Estos dos funcionan solitos
+      #@expenses=Expense.where(concept: "#{params[:concept]}").to_a
       @current=params[:concept]
     elsif params[:category_id] && params[:concept].blank?
       @category=Category.find(params[:category_id])
