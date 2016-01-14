@@ -25,6 +25,8 @@ class ExpensesController < ApplicationController
       @expenses=@category.expenses.all
       @current=@category.name
     elsif params[:concept] && params[:category_id]
+
+
       @category=Category.find(params[:category_id])
       @expensescategory=@category.expenses.all
 
@@ -32,19 +34,20 @@ class ExpensesController < ApplicationController
       #@expensesconcept=Expense.where(concept: "#{params[:concept]}").to_a
       concept=params[:concept].split
       concept.reject!{|x| x.length<=3}
-      expense=Expense.all
+      #expense=Expense.all
       @expensesconcept=[]
-      expense.each do |hash|
+      @expensescategory.each do |hash|
           if concept.any? {|w| hash[:concept] =~ /#{w}/ }
             @expensesconcept << hash
           end
       end
 
+      @expenses=@expensesconcept
 
-
-      @expenses=(@expensescategory|@expensesconcept).sort {|a,b| b.date <=> a.date}
+      #@expenses=(@expensescategory|@expensesconcept).sort {|a,b| b.date <=> a.date}
       @current=@category.name+", "+params[:concept]
       #@expenses=@expensesunordered.sort {|a,b| b.date <=> a.date}
+
     else
       @expenses = Expense.order("date DESC")
     end
