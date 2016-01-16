@@ -6,5 +6,4 @@ class ApplicationController < ActionController::Base
   def private_access
     redirect_to :new_user_session unless signed_in?
   end
-
 end

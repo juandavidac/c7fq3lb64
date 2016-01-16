@@ -1,5 +1,6 @@
 class ExpensesController < ApplicationController
-  before_action :private_access
+  before_action :authenticate_user!
+  #bef ore_action :private_access
 
   def index
     if params[:category_id].blank? && params[:concept].blank?
