@@ -1,13 +1,16 @@
 class ExpensesController < ApplicationController
+  before_action :private_access
+
   def index
     if params[:category_id].blank? && params[:concept].blank?
-      @expenses = Expense.order("date DESC")
+      @expenses=User.find(current_user).expenses.all
+
     elsif params[:concept] && params[:category_id].blank?
       concept=params[:concept].split
       concept.reject!{|x| x.length<=3}
-      expense=Expense.all
+      expenses_user=User.find(current_user).expenses.all
       @expenses=[]
-      expense.each do |hash|
+      expenses_user.each do |hash|
           if concept.any? {|w| hash[:concept] =~ /#{w}/ }
             @expenses << hash
           end
@@ -21,14 +24,13 @@ class ExpensesController < ApplicationController
       #@expenses=Expense.where(concept: "#{params[:concept]}").to_a
       @current=params[:concept]
     elsif params[:category_id] && params[:concept].blank?
-      @category=Category.find(params[:category_id])
-      @expenses=@category.expenses.all
-      @current=@category.name
+
+      @expenses=Expense.where(category_id: params[:category_id], user_id: current_user).to_a
+      @current=params[:category_id]
+
     elsif params[:concept] && params[:category_id]
 
-
-      @category=Category.find(params[:category_id])
-      @expensescategory=@category.expenses.all
+      @expensescategory=Expense.where(category_id: params[:category_id], user_id: current_user).to_a
 
 
       #@expensesconcept=Expense.where(concept: "#{params[:concept]}").to_a
@@ -45,7 +47,7 @@ class ExpensesController < ApplicationController
       @expenses=@expensesconcept
 
       #@expenses=(@expensescategory|@expensesconcept).sort {|a,b| b.date <=> a.date}
-      @current=@category.name+", "+params[:concept]
+      @current=params[:category_id]+", "+params[:concept]
       #@expenses=@expensesunordered.sort {|a,b| b.date <=> a.date}
 
     else

@@ -15,3 +15,4 @@ Expense.create(category: restaurantes, date: Date.current, concept: "Hamburguesa
 Expense.create(category: restaurantes, date: Date.current - 4, concept: "Hamburguesas el burral", amount: 45000)
 Expense.create(category: carro, date: Date.current, concept: "Gasolina", amount: 80000)
 Expense.create(category: hogar, date: Date.current - 6, concept: "Lámparas", amount: 350000)
+Expense.create(category: hogar, date: Date.current - 6, concept: "Lámparas", amount: 40000, user_id: 1)

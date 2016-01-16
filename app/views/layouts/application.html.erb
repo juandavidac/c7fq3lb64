@@ -6,6 +6,7 @@
   <%= javascript_include_tag 'default', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
+<%if signed_in?%>
 <body>
   <nav class="navbar navbar-static-top navbar-inverse">
     <div class="container">
@@ -26,8 +27,18 @@
           <li class="active"><a href="#">Gastos <span class="sr-only">(<%=@current%>)</span></a></li>
         </ul>
       </div><!-- /.navbar-collapse -->
+      <div>
+        <% if signed_in? %>
+          <%= link_to "Salir", root_path, method: :delete %></div>
+        <% end %>
+      </div>
     </div><!-- /.container-fluid -->
   </nav>
+
+<%end%>
+
+  <p class="notice"><%= notice %></p>
+  <p class="alert"><%= alert %></p>
 
 <%= yield %>
 
