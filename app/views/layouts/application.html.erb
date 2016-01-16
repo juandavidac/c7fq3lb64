@@ -29,7 +29,7 @@
       </div><!-- /.navbar-collapse -->
       <div>
         <% if signed_in? %>
-          <%= button_to "Salir", root_path, method: :delete %></div>
+          <%= button_to "Salir", destroy_user_session_path, method: :delete %></div>
         <% end %>
       </div>
     </div><!-- /.container-fluid -->
