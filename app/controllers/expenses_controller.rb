@@ -4,12 +4,12 @@ class ExpensesController < ApplicationController
 
   def index
     if params[:category_id].blank? && params[:concept].blank?
-      @expenses=User.find(current_user).expenses.all
+      @expenses=User.find(current_user.id).expenses.all
 
     elsif params[:concept] && params[:category_id].blank?
       concept=params[:concept].split
       concept.reject!{|x| x.length<=3}
-      expenses_user=User.find(current_user).expenses.all
+      expenses_user=User.find(current_user.id).expenses.all
       @expenses=[]
       expenses_user.each do |hash|
           if concept.any? {|w| hash[:concept] =~ /#{w}/ }
@@ -26,12 +26,12 @@ class ExpensesController < ApplicationController
       @current=params[:concept]
     elsif params[:category_id] && params[:concept].blank?
 
-      @expenses=Expense.where(category_id: params[:category_id], user_id: current_user).to_a
+      @expenses=Expense.where(category_id: params[:category_id], user_id: current_user.id).to_a
       @current=params[:category_id]
 
     elsif params[:concept] && params[:category_id]
 
-      @expensescategory=Expense.where(category_id: params[:category_id], user_id: current_user).to_a
+      @expensescategory=Expense.where(category_id: params[:category_id], user_id: current_user.id).to_a
 
 
       #@expensesconcept=Expense.where(concept: "#{params[:concept]}").to_a
